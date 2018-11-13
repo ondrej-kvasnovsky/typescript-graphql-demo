@@ -7,8 +7,8 @@ import Item from './models/Item';
 
 const bodyParser = require('body-parser');
 
-// const {postgraphile} = require("postgraphile");
-// const {postgraphile, createPostGraphileSchema} = require('postgraphile');
+const {ApolloServer} = require('apollo-server-express');
+const {GraphQLSchema, GraphQLObjectType, GraphQLString} = require('graphql');
 
 class App {
     public app: express.Application;
@@ -18,8 +18,31 @@ class App {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({extended: true}));
         this.mountRoutes();
+        const schema = new GraphQLSchema({
+            query: new GraphQLObjectType({
+                name: 'Query',
+                fields: {
+                    hello: {
+                        type: GraphQLString,
+                        description: 'Returns list of items',
+                        resolve: async () => {
+                            const connection = await createConnection(typeOrmConfig);
+                            try {
+                                const repository = connection.getRepository(Item);
+                                const response = await repository.find();
+                                return JSON.stringify(response);
+                            } finally {
+                                await connection.close();
+                            }
+                        },
+                    },
+                },
+            }),
+        });
+        const server = new ApolloServer({schema});
+        server.applyMiddleware({app: this.app});
+
         // let dbUrl = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost/postgres";
-        // this.app.use(postgraphile(dbUrl));
     }
 
     private mountRoutes(): void {
@@ -57,15 +80,7 @@ class App {
         });
         this.app.use('/', router);
     }
-
-    // async initGraphql() {
-    //     https://www.graphile.org/postgraphile/usage-schema/
-        // let dbUrl = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost/postgres";
-        // const schema = await createPostGraphileSchema(dbUrl, 'public');
-        // console.log(schema);
-    // }
 }
 
 let app = new App();
-// app.initGraphql();
 export default app.app;
