@@ -7,6 +7,9 @@ import Item from './models/Item';
 
 const bodyParser = require('body-parser');
 
+// const {postgraphile} = require("postgraphile");
+// const {postgraphile, createPostGraphileSchema} = require('postgraphile');
+
 class App {
     public app: express.Application;
 
@@ -15,6 +18,8 @@ class App {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({extended: true}));
         this.mountRoutes();
+        // let dbUrl = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost/postgres";
+        // this.app.use(postgraphile(dbUrl));
     }
 
     private mountRoutes(): void {
@@ -52,6 +57,15 @@ class App {
         });
         this.app.use('/', router);
     }
+
+    // async initGraphql() {
+    //     https://www.graphile.org/postgraphile/usage-schema/
+        // let dbUrl = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost/postgres";
+        // const schema = await createPostGraphileSchema(dbUrl, 'public');
+        // console.log(schema);
+    // }
 }
 
-export default new App().app;
+let app = new App();
+// app.initGraphql();
+export default app.app;
