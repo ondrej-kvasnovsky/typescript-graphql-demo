@@ -4,26 +4,24 @@ import express from 'express';
 import 'reflect-metadata';
 
 import {schema} from './graphql/Schema';
-import {router} from './rest/router';
 
 class App {
     public app: express.Application;
 
     constructor() {
         this.app = express();
+        this.useBodyParser();
+        this.useApolloServer();
+    }
+
+    private useBodyParser() {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({extended: true}));
-        this.mountRestRoutes();
-        this.mountGraphQL();
     }
 
-    private mountGraphQL() {
+    private useApolloServer() {
         const server = new ApolloServer({schema});
         server.applyMiddleware({app: this.app});
-    }
-
-    private mountRestRoutes(): void {
-        this.app.use('/', router);
     }
 }
 
