@@ -17,7 +17,7 @@
     ],
     "indent": [
       true,
-      "spaces", 1
+      "spaces", 2
     ],
     "new-parens": true,
     "no-arg": true,

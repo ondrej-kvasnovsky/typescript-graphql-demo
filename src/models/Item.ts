@@ -3,8 +3,8 @@ import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 @Entity()
 export default class Item {
     @PrimaryGeneratedColumn()
-    id!: number;
+    public id!: number;
 
     @Column()
-    name?: string;
+    public name?: string;
 }
