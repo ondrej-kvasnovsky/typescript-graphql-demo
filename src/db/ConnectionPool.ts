@@ -2,9 +2,14 @@ import {Connection, createConnection} from 'typeorm';
 import {typeOrmConfig} from '../models/config';
 
 class ConnectionPool {
-    // TODO: fix creation of new connection pool every time
+    private static instance: Connection;
+
     async getConnection(): Promise<Connection> {
-        return createConnection(typeOrmConfig);
+        if (!ConnectionPool.instance) {
+            console.log("Creating instance...");
+            ConnectionPool.instance = await createConnection(typeOrmConfig);
+        }
+        return ConnectionPool.instance;
     }
 }
 
