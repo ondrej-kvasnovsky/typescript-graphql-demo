@@ -1,6 +1,6 @@
 import {GraphQLID, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString} from 'graphql';
-import {resolveItems} from '../items/resolveItems';
-import {resolveItemDetail} from '../items/test/resolveItemDetail';
+import {findAll} from '../items/findAll';
+import {findOne} from '../items/findOne';
 
 const ItemType = new GraphQLObjectType({
     name: 'Item',
@@ -25,14 +25,17 @@ const query = new GraphQLObjectType({
             type: new GraphQLList(ItemType),
             description: 'Returns list of items',
             resolve: async () => {
-                return await resolveItems();
+                return await findAll();
             }
         },
-        itemDetail: {
+        item: {
             type: new GraphQLList(ItemDetailType),
-            description: 'Returns list of items',
-            resolve: async () => {
-                return await resolveItemDetail();
+            description: 'Returns an item',
+            args: {
+                id: {type: GraphQLInt}
+            },
+            resolve: async (id) => {
+                return await findOne(id);
             }
         }
     }),

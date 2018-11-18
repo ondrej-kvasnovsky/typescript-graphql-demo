@@ -1,5 +1,5 @@
 import {Connection, createConnection} from 'typeorm';
-import {typeOrmConfig} from '../models/config';
+import {typeOrmConfig} from './typeOrmConfig';
 
 class ConnectionPool {
     private static instance: Connection;

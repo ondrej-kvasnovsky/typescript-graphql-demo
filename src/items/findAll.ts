@@ -1,7 +1,7 @@
-import {connectionPool} from '../../db/ConnectionPool';
-import Item from '../../models/Item';
+import Item from './Item';
+import {connectionPool} from '../db/ConnectionPool';
 
-let resolveItemDetail = async () => {
+let findAll = async () => {
     const connection = await connectionPool.getConnection();
     try {
         const repository = connection.getRepository(Item);
@@ -12,4 +12,4 @@ let resolveItemDetail = async () => {
     }
 };
 
-export {resolveItemDetail};
+export {findAll};
