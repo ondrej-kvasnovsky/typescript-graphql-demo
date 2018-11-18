@@ -2,9 +2,9 @@ import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity()
 export default class Item {
-    @PrimaryGeneratedColumn()
-    public id!: number;
+  @PrimaryGeneratedColumn()
+  public id!: number;
 
-    @Column()
-    public name?: string;
+  @Column()
+  public name?: string;
 }

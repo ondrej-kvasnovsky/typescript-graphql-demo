@@ -3,26 +3,30 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import 'reflect-metadata';
 
-import {schema} from './graphql/Schema';
+import {ApolloConfig} from './graphql/ApolloConfig';
 
 class App {
-    public app: express.Application;
+  public app: express.Application;
 
-    constructor() {
-        this.app = express();
-        this.useBodyParser();
-        this.useApolloServer();
-    }
+  constructor() {
+    this.app = express();
+    this.useBodyParser();
+    this.useApolloServer();
+  }
 
-    private useBodyParser() {
-        this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({extended: true}));
-    }
+  private useBodyParser() {
+    this.app.use(bodyParser.json());
+    this.app.use(bodyParser.urlencoded({extended: true}));
+  }
 
-    private useApolloServer() {
-        const server = new ApolloServer({schema});
-        server.applyMiddleware({app: this.app});
-    }
+  private useApolloServer() {
+    const schema = new ApolloConfig();
+    const promise = schema.getApolloConfig();
+    promise.then((apolloConfig) => {
+      const server = new ApolloServer(apolloConfig);
+      server.applyMiddleware({app: this.app});
+    }).catch((err) => console.error(err));
+  }
 }
 
 const app = new App();
