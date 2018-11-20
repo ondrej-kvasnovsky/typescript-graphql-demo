@@ -1,5 +1,5 @@
-import {connectionPool} from '../db/ConnectionPool';
-import Item from './Item';
+import {connectionPool} from 'app/db/ConnectionPool';
+import Item from '../items/Item';
 
 const findAll = async () => {
   const connection = await connectionPool.getConnection();

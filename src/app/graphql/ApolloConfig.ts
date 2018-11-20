@@ -3,7 +3,8 @@ import {gql} from 'apollo-server-express';
 import fs from 'fs';
 import {DocumentNode} from 'graphql';
 
-const {promisify} = require('util');
+import {promisify} from 'util';
+
 const readFile = promisify(fs.readFile);
 
 export class ApolloConfig {
@@ -15,7 +16,7 @@ export class ApolloConfig {
   }
 
   private async loadSchema(): Promise<string> {
-    return readFile('src/graphql/schema.graphql', {encoding: 'utf8'});
+    return readFile('src/app/graphql/schema.graphql', {encoding: 'utf8'});
   }
 
   private async getTypeDefs(): Promise<DocumentNode> {
@@ -25,14 +26,14 @@ export class ApolloConfig {
 
   private getResolvers() {
     const resolvers = {
-      Query: {
-        getBooks: () => [{name: 'Bunnies are the best'}],
-        getAuthors: () => [{firstName: 'Miki'}],
-      },
       Mutation: {
         createBook: (parent: any, args: any) => {
           return {name: args.name};
         },
+      },
+      Query: {
+        getAuthors: () => [{firstName: 'Miki'}],
+        getBooks: () => [{name: 'Bunnies are the best'}],
       },
     };
     return resolvers;

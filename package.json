@@ -6,22 +6,23 @@
   "scripts": {
     "start": "npm run build:live",
     "build": "tsc -p .",
-    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "build:trace": "tsc -p . --traceResolution",
+    "build:live": "nodemon --watch 'src/app/**/*.ts' --exec 'ts-node' src/app/index.ts",
     "lint": "tslint --fix -c ./tslint.json 'src/**/*.ts'",
-    "test": "mocha -r ts-node/register test/**/*.spec.ts",
-    "testWithCoverage": "nyc -r lcov -e .ts -x \"*.spec.ts\" mocha -r ts-node/register test/**/*.spec.ts && nyc report"
+    "test": "tsc && mocha --require ts-node/register src/**/*.spec.ts",
+    "testWithCoverage": "nyc -r lcov -e .ts -x \"*.spec.ts\" mocha -r ts-node/register src/**/*.spec.ts && nyc report"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "apollo-server-express": "^2.2.1",
+    "apollo-server-express": "^2.2.2",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "graphql": "^14.0.2",
     "lodash": "^4.17.11",
     "pg": "^7.6.1",
-    "typeorm": "^0.2.8"
+    "typeorm": "^0.2.9"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.118",
@@ -29,7 +30,7 @@
     "@types/express": "^4.16.0",
     "@types/graphql": "^14.0.3",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.5",
+    "@types/node": "^10.12.9",
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
     "ts-node": "^7.0.1",
