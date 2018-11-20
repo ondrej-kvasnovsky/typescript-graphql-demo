@@ -5,6 +5,7 @@ type Query {
 
 type Mutation {
     createBook(name: String!): Book
+    createAuthor(firstName: String!, lastName: String!): Author
 }
 
 type Book {
@@ -13,4 +14,5 @@ type Book {
 
 type Author {
     firstName: String
+    lastName: String
 }

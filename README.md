@@ -15,8 +15,17 @@ You can try out to call GraphQL API:
 
 ```graphql
 mutation {
+  createAuthor(firstName:"Jimmy", lastName: "Han") {
+    firstName, lastName
+  }
+}
+
+mutation {
   createBook(name:"My Book") {
     name
+  }
+  createAuthor(firstName:"Jimmy", lastName: "Han") {
+    firstName, lastName
   }
 }
 
@@ -25,7 +34,7 @@ query {
     name
   }
   getAuthors{
-    firstName
+    firstName, lastName
   }
 }
 ```

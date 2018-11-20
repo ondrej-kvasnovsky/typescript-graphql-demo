@@ -5,7 +5,7 @@ import 'reflect-metadata';
 
 import {ApolloConfig} from './graphql/ApolloConfig';
 
-class App {
+export class App {
   public app: express.Application;
 
   constructor() {
@@ -28,6 +28,3 @@ class App {
     }).catch((err) => console.error(err));
   }
 }
-
-const app = new App();
-export default app.app;

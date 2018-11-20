@@ -1,6 +1,7 @@
 import {PostgresConnectionOptions} from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
-import Item from '../items/Item';
+import Author from '../author/Author';
+import Book from '../book/Book';
 
 const typeOrmConfig: PostgresConnectionOptions = {
   type: 'postgres',
@@ -12,7 +13,8 @@ const typeOrmConfig: PostgresConnectionOptions = {
   synchronize: true,
   logging: false,
   entities: [
-    Item,
+    Book,
+    Author,
   ],
 };
 

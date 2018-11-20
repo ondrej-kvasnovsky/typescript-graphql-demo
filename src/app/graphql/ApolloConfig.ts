@@ -4,6 +4,13 @@ import fs from 'fs';
 import {DocumentNode} from 'graphql';
 
 import {promisify} from 'util';
+import Author from '../author/Author';
+import {Authors} from '../author/Authors';
+import Book from '../book/Book';
+import {Books} from '../book/Books';
+
+const books: Books = new Books();
+const authors: Authors = new Authors();
 
 const readFile = promisify(fs.readFile);
 
@@ -27,37 +34,28 @@ export class ApolloConfig {
   private getResolvers() {
     const resolvers = {
       Mutation: {
-        createBook: (parent: any, args: any) => {
-          return {name: args.name};
+        createBook: async (parent: any, args: any) => {
+          const book = new Book();
+          book.name = args.name;
+          return books.insert(book);
+        },
+        createAuthor: async (parent: any, args: any) => {
+          const book = new Author();
+          book.firstName = args.firstName;
+          book.lastName = args.lastName;
+
+          return authors.insert(book);
         },
       },
       Query: {
-        getAuthors: () => [{firstName: 'Miki'}],
-        getBooks: () => [{name: 'Bunnies are the best'}],
+        getAuthors: async () => {
+          return authors.findAll();
+        },
+        getBooks: async () => {
+          return books.findAll();
+        },
       },
     };
     return resolvers;
   }
 }
-
-// query {
-//   getBooks {
-//     name
-//   }
-//   getAuthors {
-//     firstName
-//   }
-// }
-
-// {
-//   __type(name: "BlahBlah") {
-//     name
-//     description
-//     fields {
-//       name
-//       type {
-//         name
-//       }
-//     }
-//   }
-// }
