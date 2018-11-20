@@ -3,6 +3,7 @@
 ## Install & Run
 
 ```bash
+docker-compose up
 npm install
 npm test
 npm start
