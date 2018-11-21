@@ -3,18 +3,27 @@ import {gql} from 'apollo-server-express';
 import fs from 'fs';
 import {DocumentNode} from 'graphql';
 
+import {inject, injectable} from 'inversify';
 import {promisify} from 'util';
 import Author from '../author/Author';
-import {Authors} from '../author/Authors';
+import Authors from '../author/Authors';
 import Book from '../book/Book';
-import {Books} from '../book/Books';
-
-const books: Books = new Books();
-const authors: Authors = new Authors();
+import Books from '../book/Books';
+import {TYPES} from '../di/types';
 
 const readFile = promisify(fs.readFile);
 
+@injectable()
 export class ApolloConfig {
+
+  private books: Books;
+  private authors: Authors;
+
+  constructor(@inject(TYPES.Books) books: Books,
+              @inject(TYPES.Authors) authors: Authors) {
+    this.books = books;
+    this.authors = authors;
+  }
 
   public async getApolloConfig() {
     const typeDefs = await this.getTypeDefs();
@@ -37,22 +46,22 @@ export class ApolloConfig {
         createBook: async (parent: any, args: any) => {
           const book = new Book();
           book.name = args.name;
-          return books.insert(book);
+          return this.books.insert(book);
         },
         createAuthor: async (parent: any, args: any) => {
           const book = new Author();
           book.firstName = args.firstName;
           book.lastName = args.lastName;
 
-          return authors.insert(book);
+          return this.authors.insert(book);
         },
       },
       Query: {
         getAuthors: async () => {
-          return authors.findAll();
+          return this.authors.findAll();
         },
         getBooks: async () => {
-          return books.findAll();
+          return this.books.findAll();
         },
       },
     };

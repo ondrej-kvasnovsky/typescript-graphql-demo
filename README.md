@@ -1,4 +1,12 @@
-# Demo for NodeJS, TypeScript, TypeORM, ApolloServer (GraphQL), Express
+# Demo
+
+* [NodeJS](https://nodejs.org/en/docs/)
+* [Express](https://expressjs.com/en/starter/installing.html)
+* [TypeScript](https://www.typescriptlang.org/docs/home.html)
+* [InversifyJS](http://inversify.io)
+* [TypeORM](http://typeorm.io/#/)
+* [GraphQL](https://graphql.org/learn/) with [ApolloServer](ApolloServer)
+* [Mocha](https://mochajs.org) with [Chai](https://www.chaijs.com/guide/)
 
 ## Install & Run
 
@@ -9,7 +17,7 @@ npm test
 npm start
 ```
 
-The app is running on http://localhost:3000/graphql
+The app is running on `http://localhost:3000/graphql`
 
 You can try out to call GraphQL API: 
 

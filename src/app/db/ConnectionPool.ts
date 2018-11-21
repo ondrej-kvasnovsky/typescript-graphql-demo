@@ -1,16 +1,6 @@
-import {Connection, createConnection} from 'typeorm';
-import {typeOrmConfig} from './typeOrmConfig';
+import {Connection, EntitySchema, ObjectType, Repository} from 'typeorm';
 
-class ConnectionPool {
-  private static instance: Connection;
-
-  public async getConnection(): Promise<Connection> {
-    if (!ConnectionPool.instance) {
-      ConnectionPool.instance = await createConnection(typeOrmConfig);
-    }
-    return ConnectionPool.instance;
-  }
+export default interface ConnectionPool {
+  getConnection(): Promise<Connection>;
+  getRepository<T>(target: ObjectType<T> | EntitySchema<T> | string): Promise<Repository<T>>;
 }
-
-const connectionPool = new ConnectionPool();
-export {connectionPool};

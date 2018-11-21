@@ -1,26 +1,25 @@
-import {connectionPool} from '../db/ConnectionPool';
+import {inject, injectable} from 'inversify';
+import ConnectionPool from '../db/ConnectionPool';
+import {TYPES} from '../di/types';
 import Book from './Book';
 
-export class Books {
-  // TODO: probably add IoC to solve all these issues and make it testable (using constructor for DI)
-  // constructor() {
-  //   this.connection = await connectionPool.getConnection();
-  // }
+@injectable()
+export default class Books {
+  private connectionPool: ConnectionPool;
 
-  public async findAll() {
-    const connection = await connectionPool.getConnection();
-    try {
-      const repository = connection.getRepository(Book);
-      return await repository.find();
-    } catch (e) {
-      console.error(e);
-    }
+  constructor(@inject(TYPES.ConnectionPool) connectionPool: ConnectionPool) {
+    this.connectionPool = connectionPool;
   }
 
-  public async findOne(id: number) {
-    const connection = await connectionPool.getConnection();
+  public async findAll(): Promise<Book[]> {
+    const repository = await this.connectionPool.getRepository(Book);
+    const books = await repository.find();
+    return books;
+  }
+
+  public async findOne(id: number): Promise<Book | undefined> {
     try {
-      const repository = connection.getRepository(Book);
+      const repository = await this.connectionPool.getRepository(Book);
       return repository.findOne(id);
     } catch (e) {
       console.error(e);
@@ -28,8 +27,7 @@ export class Books {
   }
 
   public async insert(book: Book) {
-    const connection = await connectionPool.getConnection();
-    const repository = connection.getRepository(Book);
+    const repository = await this.connectionPool.getRepository(Book);
     return repository.save(book);
   }
 }

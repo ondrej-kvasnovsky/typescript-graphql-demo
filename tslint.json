@@ -18,7 +18,8 @@
     ],
     "indent": [
       true,
-      "spaces", 2
+      "spaces",
+      2
     ],
     "new-parens": true,
     "no-arg": true,
@@ -36,6 +37,10 @@
         "trace"
       ]
     },
+    "interface-name": [
+      true,
+      "never-prefix"
+    ],
     "eofline": true
   },
   "jsRules": {

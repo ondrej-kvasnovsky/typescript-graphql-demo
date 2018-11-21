@@ -4,6 +4,7 @@
     "target": "ES2017",
     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     "module": "commonjs",
+    "types": ["reflect-metadata"],
     "lib": [
       "es5",
       "es6",

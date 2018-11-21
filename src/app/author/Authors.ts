@@ -1,33 +1,37 @@
-import {connectionPool} from '../db/ConnectionPool';
+import {inject, injectable} from 'inversify';
+import ConnectionPool from '../db/ConnectionPool';
+import {TYPES} from '../di/types';
 import Author from './Author';
-import Book from '../book/Book';
 
-export class Authors {
+@injectable()
+export default class Authors {
+  private connectionPool: ConnectionPool;
+
+  constructor(@inject(TYPES.ConnectionPool) connectionPool: ConnectionPool) {
+    this.connectionPool = connectionPool;
+  }
+
   public async findAll() {
-    const connection = await connectionPool.getConnection();
     try {
-      const repository = connection.getRepository(Author);
-      const response = await repository.find();
-      return response;
+      const repository = await this.connectionPool.getRepository(Author);
+      return repository.find();
     } catch (e) {
       console.error(e);
+      return [];
     }
   }
 
   public async findOne(id: number) {
-    const connection = await connectionPool.getConnection();
     try {
-      const repository = connection.getRepository(Author);
-      const response = await repository.findOne(id);
-      return response;
+      const repository = await this.connectionPool.getRepository(Author);
+      return repository.findOne(id);
     } catch (e) {
       console.error(e);
     }
   }
 
   public async insert(author: Author) {
-    const connection = await connectionPool.getConnection();
-    const repository = connection.getRepository(Author);
+    const repository = await this.connectionPool.getRepository(Author);
     return repository.save(author);
   }
 }

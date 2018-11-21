@@ -3,12 +3,17 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import 'reflect-metadata';
 
+import {inject, injectable} from 'inversify';
+import {TYPES} from './di/types';
 import {ApolloConfig} from './graphql/ApolloConfig';
 
-export class App {
+@injectable()
+export default class App {
   public app: express.Application;
+  private apolloConfig: ApolloConfig;
 
-  constructor() {
+  constructor(@inject(TYPES.ApolloConfig) apolloConfig: ApolloConfig) {
+    this.apolloConfig = apolloConfig;
     this.app = express();
     this.useBodyParser();
     this.useApolloServer();
@@ -20,8 +25,7 @@ export class App {
   }
 
   private useApolloServer() {
-    const schema = new ApolloConfig();
-    const promise = schema.getApolloConfig();
+    const promise = this.apolloConfig.getApolloConfig();
     promise.then((apolloConfig) => {
       const server = new ApolloServer(apolloConfig);
       server.applyMiddleware({app: this.app});
