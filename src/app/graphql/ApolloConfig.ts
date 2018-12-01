@@ -10,6 +10,7 @@ import Authors from '../author/Authors';
 import Book from '../book/Book';
 import Books from '../book/Books';
 import {TYPES} from '../di/types';
+import {Dialogflow} from '../speach/Dialogflow';
 
 const readFile = promisify(fs.readFile);
 
@@ -18,11 +19,14 @@ export class ApolloConfig {
 
   private books: Books;
   private authors: Authors;
+  private dialogflow: Dialogflow;
 
   constructor(@inject(TYPES.Books) books: Books,
-              @inject(TYPES.Authors) authors: Authors) {
+              @inject(TYPES.Authors) authors: Authors,
+              @inject(TYPES.Dialogflow) dialogflow: Dialogflow) {
     this.books = books;
     this.authors = authors;
+    this.dialogflow = dialogflow;
   }
 
   public async getApolloConfig() {
@@ -62,6 +66,11 @@ export class ApolloConfig {
         },
         getBooks: async () => {
           return this.books.findAll();
+        },
+        ask: async (parent: any, args: any) => {
+          const question = args.question;
+          const answer = await this.dialogflow.ask(question);
+          return answer;
         },
       },
     };

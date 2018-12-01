@@ -1,6 +1,7 @@
 type Query {
     getBooks: [Book]
     getAuthors: [Author]
+    ask(question: String!): Answer
 }
 
 type Mutation {
@@ -15,4 +16,9 @@ type Book {
 type Author {
     firstName: String
     lastName: String
+}
+
+type Answer {
+    text: String
+    intent: String
 }
