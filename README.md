@@ -17,6 +17,9 @@ npm install
 npm test
 npm start
 
+# https://cloud.google.com/docs/authentication/getting-started
+gcloud auth login
+gcloud config set project [PROJECT_ID]
 gcloud iam service-accounts create [SERVICE_NAME]
 gcloud projects add-iam-policy-binding [PROJECT_ID] --member "serviceAccount:[SERVICE_NAME]@[PROJECT_ID].iam.gserviceaccount.com" --role "roles/owner"
 gcloud iam service-accounts keys create keyFile.json --iam-account [SERVICE_NAME]@[PROJECT_ID].iam.gserviceaccount.com
