@@ -19,7 +19,7 @@
   "dependencies": {
     "apollo-server-express": "^2.14.2",
     "body-parser": "^1.20.1",
-    "dialogflow": "^1.2.0",
+    "dialogflow": "^4.0.3",
     "express": "^4.19.2",
     "graphql": "^14.0.2",
     "inversify": "^5.0.1",
